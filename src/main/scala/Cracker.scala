@@ -1,17 +1,17 @@
-import java.io.{BufferedInputStream, FileOutputStream, InputStream}
-import javax.sound.sampled.AudioSystem
-import com.amazonaws.services.polly._
-import com.amazonaws.services.polly.model._
-
 object Cracker extends App {
-  val mp3Name = "cracker.mp3"
+  import java.io.InputStream
 
+  val mp3FileName = java.io.File.createTempFile("cracker", ".mp3").getAbsolutePath
   val message = if (args.nonEmpty) args(0) else "Polly wants a cracker!"
   val stream = speechStream(message)
-  saveMp3File(stream, mp3Name)
-  //playFile(mp3Name) // disabled because it does not work
+  saveMp3File(stream, mp3FileName)
+  playFile(mp3FileName)
 
+  /** Obtain MP3 stream from AWS Polly that voices the message */
   def speechStream(message: String): InputStream = {
+    import com.amazonaws.services.polly._
+    import com.amazonaws.services.polly.model._
+
     val pollyClient = AmazonPollyClientBuilder.standard.build
     val request = new SynthesizeSpeechRequest
     request.setVoiceId(VoiceId.Joanna)
@@ -21,10 +21,12 @@ object Cracker extends App {
     synthesizeSpeechResult.getAudioStream
   }
 
-  /** Side effect: Create MP3 file */
-  def saveMp3File(stream: InputStream, mp3Name: String): Unit = {
-    val bis = new BufferedInputStream(stream)
-    val fos = new FileOutputStream(mp3Name)
+  /** Side effect: Create temporary MP3 file from input MP3 stream */
+  def saveMp3File(mp3Stream: InputStream, mp3FileName: String): Unit = {
+    import java.io.{BufferedInputStream, FileOutputStream}
+
+    val bis = new BufferedInputStream(mp3Stream)
+    val fos = new FileOutputStream(mp3FileName)
     val buf = new Array[Byte](1024)
     Iterator
       .continually(bis.read(buf))
@@ -32,14 +34,24 @@ object Cracker extends App {
       .foreach(fos.write(buf, 0, _))
   }
 
-  /** Side effect: Play mp3 file
-    * Exception in thread "main" java.lang.NullPointerException
-    	at com.sun.media.sound.SoftMidiAudioFileReader.getAudioInputStream(SoftMidiAudioFileReader.java:134) */
-  def playFile(mp3Name: String): Unit = {
-    val clip = AudioSystem.getClip()
-    val x: InputStream = getClass.getResourceAsStream(mp3Name)
-    val audioInputStream = AudioSystem.getAudioInputStream(x)
-    clip.open(audioInputStream)
-    clip.start()
+  /** Side effects: Play mp3 file using javafx and delete mp3 file
+    * The shutdown technique is explained in https://scalacourses.com/student/showLecture/175 */
+  def playFile(mp3FileName: String): Unit = {
+    import javafx.scene.media.{Media, MediaPlayer}
+    import scala.concurrent.Promise
+
+    com.sun.javafx.application.PlatformImpl.startup( () => {
+      val file = new java.io.File(mp3FileName)
+      val uri = file.toURI
+      val media = new Media(uri.toString)
+      val mediaPlayer: MediaPlayer = new MediaPlayer(media)
+      mediaPlayer.play()
+      val promise = Promise[String]()
+      mediaPlayer.setOnEndOfMedia { () =>
+        promise.success("done")
+        file.delete()
+        System.exit(0)
+      }
+    })
   }
 }
