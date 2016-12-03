@@ -9,5 +9,5 @@ You can run the program from SBT:
 
 You can also build a fat jar and run it with arbitrary message to voice:
 
-   $ sbt assembly
-   $ java -jar target/scala-2.12/cracker-assembly-0.1.0.jar "Learn Scala and Play at ScalaCourses.com!"
+    $ sbt assembly
+    $ java -jar target/scala-2.12/cracker-assembly-0.1.0.jar "Learn Scala and Play at ScalaCourses.com!"
