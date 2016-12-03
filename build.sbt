@@ -24,7 +24,7 @@ scalacOptions ++= Seq(
 scalacOptions in (Compile, doc) ++= baseDirectory.map {
   (bd: File) => Seq[String](
      "-sourcepath", bd.getAbsolutePath,
-     "-doc-source-url", "https://github.com/mslinn/changeMe/tree/master€{FILE_PATH}.scala"
+     "-doc-source-url", "https://github.com/mslinn/cracker/tree/master€{FILE_PATH}.scala"
   )
 }.value
 
@@ -36,14 +36,17 @@ javacOptions ++= Seq(
   "-g:vars"
 )
 
-resolvers ++= Seq(
-)
-
 libraryDependencies ++= Seq(
   "com.amazonaws"  % "aws-java-sdk-osgi" % "1.11.63" withSources(),
   "org.scalatest"  %% "scalatest"        % "3.0.0"  % "test" withSources(),
   "junit"          %  "junit"            % "4.12"   % "test"
 )
+
+assemblyMergeStrategy in assembly := {
+  case m if m.toLowerCase.endsWith("manifest.mf")          => MergeStrategy.discard
+  case m if m.toLowerCase.matches("meta-inf.*\\.sf$")      => MergeStrategy.discard
+  case _                                                   => MergeStrategy.first
+}
 
 logLevel := Level.Warn
 
@@ -59,5 +62,3 @@ initialCommands in console := """
                                 |""".stripMargin
 
 cancelable := true
-
-sublimeTransitive := true
