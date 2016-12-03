@@ -1,11 +1,13 @@
+import java.io.File
+
 object Cracker extends App {
   import java.io.InputStream
 
-  val mp3FileName = java.io.File.createTempFile("cracker", ".mp3").getAbsolutePath
+  val mp3File = File.createTempFile("cracker", ".mp3")
   val message = if (args.nonEmpty) args(0) else "Polly wants a cracker!"
   val stream = speechStream(message)
-  saveMp3File(stream, mp3FileName)
-  playFile(mp3FileName)
+  saveMp3File(stream, mp3File.getAbsolutePath)
+  playFile(mp3File)
 
   /** Obtain MP3 stream from AWS Polly that voices the message */
   def speechStream(message: String): InputStream = {
@@ -36,20 +38,15 @@ object Cracker extends App {
 
   /** Side effects: Play mp3 file using javafx and delete mp3 file
     * The shutdown technique is explained in https://scalacourses.com/student/showLecture/175 */
-  def playFile(mp3FileName: String): Unit = {
+  def playFile(mp3File: File): Unit = {
     import javafx.scene.media.{Media, MediaPlayer}
-    import scala.concurrent.Promise
 
     com.sun.javafx.application.PlatformImpl.startup( () => {
-      val file = new java.io.File(mp3FileName)
-      val uri = file.toURI
-      val media = new Media(uri.toString)
+      val media = new Media(mp3File.toURI.toString)
       val mediaPlayer: MediaPlayer = new MediaPlayer(media)
       mediaPlayer.play()
-      val promise = Promise[String]()
       mediaPlayer.setOnEndOfMedia { () =>
-        promise.success("done")
-        file.delete()
+        mp3File.delete()
         System.exit(0)
       }
     })
