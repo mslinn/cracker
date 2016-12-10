@@ -58,7 +58,10 @@ logLevel in compile := Level.Warn
 logLevel in test := Level.Info
 
 // define the statements initially evaluated when entering 'console', 'console-quick', but not 'console-project'
-initialCommands in console := """
+initialCommands in console := """import com.amazonaws.services.polly._
+                                |import com.amazonaws.services.polly.model._
+                                |import com.micronautics.options._
+                                |import java.io.{BufferedInputStream, File, FileOutputStream, InputStream}
                                 |""".stripMargin
 
 cancelable := true

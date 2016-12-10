@@ -1,27 +1,22 @@
 package com.micronautics.options
 
-object OptionLike {
+object AbstractOptions {
   val testing: Boolean = try {
     throw new Exception("")
   } catch {
-    case e: Exception =>
-      val x = e.getStackTrace.exists(_.getClassName.startsWith("org.scalatest"))
-      x
+    case e: Exception => e.getStackTrace.exists(_.getClassName.startsWith("org.scalatest"))
   }
 }
 
-trait OptionLike {
-  def args: Array[String]
-  def helpMsg: String
-
+abstract class AbstractOptions(args: Array[String], helpMsg: String) {
   protected var options: Array[String] = args
 
-  if (isPresent("-h")) help("")
+  if (isPresent("-h")) help()
 
-  def help(msg: String): Unit = {
+  def help(msg: String=""): Unit = {
     if (msg.nonEmpty) println(s"Error: $msg\n")
     println(helpMsg)
-    if (OptionLike.testing) throw new OptionParseException(msg) else System.exit(1)
+    if (AbstractOptions.testing) throw new OptionParseException(msg) else System.exit(1)
   }
 
   def isPresent(option: String): Boolean = {

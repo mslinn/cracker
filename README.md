@@ -35,3 +35,7 @@ Mizuki, Liv, Lotte, Ruben, Ewa, Jacek, Jan, Maja, Ricardo, Vitoria, Cristiano, I
     -i input.txt \
     -o output.mp3 \
     -w Joey
+
+The help message is produced in response to the `-h` option:
+
+    $ java -jar target/scala-2.12/cracker-assembly-0.1.1.jar -h
