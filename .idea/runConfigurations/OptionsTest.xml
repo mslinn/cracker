@@ -1,0 +1,17 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="OptionsTest" type="ScalaTestRunConfiguration" factoryName="ScalaTest">
+    <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+    <module name="cracker" />
+    <setting name="path" value="OptionsTest" />
+    <setting name="package" value="" />
+    <setting name="vmparams" value="" />
+    <setting name="params" value="" />
+    <setting name="workingDirectory" value="file://$PROJECT_DIR$" />
+    <setting name="searchForTest" value="Across module dependencies" />
+    <setting name="testName" value="" />
+    <setting name="testKind" value="Class" />
+    <setting name="showProgressMessages" value="true" />
+    <envs />
+    <method />
+  </configuration>
+</component>

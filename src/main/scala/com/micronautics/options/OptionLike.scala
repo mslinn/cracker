@@ -1,9 +1,18 @@
 package com.micronautics.options
 
+object OptionLike {
+  val testing: Boolean = try {
+    throw new Exception("")
+  } catch {
+    case e: Exception =>
+      val x = e.getStackTrace.exists(_.getClassName.startsWith("org.scalatest"))
+      x
+  }
+}
+
 trait OptionLike {
   def args: Array[String]
   def helpMsg: String
-  def testing: Boolean
 
   protected var options: Array[String] = args
 
@@ -12,7 +21,7 @@ trait OptionLike {
   def help(msg: String): Unit = {
     if (msg.nonEmpty) println(s"Error: $msg\n")
     println(helpMsg)
-    if (testing) throw new OptionParseException(msg) else System.exit(1)
+    if (OptionLike.testing) throw new OptionParseException(msg) else System.exit(1)
   }
 
   def isPresent(option: String): Boolean = {

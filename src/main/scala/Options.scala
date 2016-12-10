@@ -2,19 +2,7 @@ import com.amazonaws.services.polly.model.VoiceId
 import com.micronautics.options._
 import java.io.File
 
-object Options {
-  val testing: Boolean = try {
-    throw new Exception("")
-  } catch {
-    case e: Exception =>
-      val x = e.getStackTrace.exists(_.getClassName.startsWith("org.scalatest"))
-      x
-  }
-}
-
 class Options(val args: Array[String]) extends OptionLike {
-  def testing: Boolean = Options.testing
-
   lazy val (temporaryOut, mp3File)= value("-o").map { outputFileName =>
     val file = new File(outputFileName)
     false -> file
