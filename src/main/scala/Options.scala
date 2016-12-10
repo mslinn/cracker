@@ -27,10 +27,10 @@ class Options(args: Array[String], testing: Boolean=false) {
     false -> file
   }.getOrElse(true -> File.createTempFile("cracker", ".mp3"))
 
-  lazy val voiceIds: List[String] = VoiceId.values.map(_.name).toList
-  lazy val voiceId: String = value("-w").map { vId =>
-    if (!voiceIds.contains(vId)) throw new InvalidVoiceIdException(s"Voice $vId is not valid.")
-    vId
+  lazy val voiceNames: List[String] = VoiceId.values.map(_.name).toList
+  lazy val voiceId: String = value("-w").map { voiceName =>
+    if (!voiceNames.contains(voiceName)) throw new InvalidVoiceIdException(s"Voice $voiceName is not valid.")
+    voiceName
   }.getOrElse(VoiceId.Joanna.name)
 
   // This option test must be last because it can reference args(0)
@@ -64,7 +64,7 @@ class Options(args: Array[String], testing: Boolean=false) {
                |    -o blah.mp3
                |
                |The voice used defaults to Joanna, but you can override this with the -w option.
-               |VoiceIds are: ${ voiceIds.mkString(", ") }
+               |VoiceIds are: ${ voiceNames.mkString(", ") }
                |""".stripMargin)
     if (testing) throw new OptionParseException(msg) else System.exit(1)
   }

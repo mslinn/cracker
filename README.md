@@ -26,12 +26,12 @@ You can also cause input to be read with the `-i` option; this causes any input 
     -i input.txt \
     -o blah.mp3
 
-The default voice to use is Joanna. You can specify another voice with the `-w` option. Available voices are:
-Geraint, Gwyneth, Mads, Naja, Hans, Marlene, Nicole, Russell, Amy, Brian, Emma, Raveena, Ivy, Joanna, Joey, Justin, 
+The default voice to use is Joanna. You can specify another voice with the `-w` option. The only other English voice is Joey.
+Available voices are: Geraint, Gwyneth, Mads, Naja, Hans, Marlene, Nicole, Russell, Amy, Brian, Emma, Raveena, Ivy, Joanna, Joey, Justin, 
 Kendra, Kimberly, Salli, Conchita, Enrique, Miguel, Penelope, Chantal, Celine, Mathieu, Dora, Karl, Carla, Giorgio, 
 Mizuki, Liv, Lotte, Ruben, Ewa, Jacek, Jan, Maja, Ricardo, Vitoria, Cristiano, Ines, Carmen, Maxim, Tatyana, Astrid, and Filiz
 
     $ java -jar target/scala-2.12/cracker-assembly-0.1.1.jar \
     -i input.txt \
     -o blah.mp3 \
-    -w Raveena
+    -w Joey
