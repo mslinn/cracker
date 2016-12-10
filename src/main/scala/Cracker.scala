@@ -1,13 +1,12 @@
 import java.io.File
+import java.io.InputStream
 
 object Cracker extends App {
-  import java.io.InputStream
+  val options = new Options(args)
+  val stream = speechStream(options.message)
+  saveMp3File(stream, options.mp3File.getAbsolutePath)
+  if (options.temporaryOut) playFile(options.mp3File)
 
-  val mp3File = File.createTempFile("cracker", ".mp3")
-  val message = if (args.nonEmpty) args(0) else "Polly wants a cracker!"
-  val stream = speechStream(message)
-  saveMp3File(stream, mp3File.getAbsolutePath)
-  playFile(mp3File)
 
   /** Obtain MP3 stream from AWS Polly that voices the message */
   def speechStream(message: String): InputStream = {
@@ -16,7 +15,7 @@ object Cracker extends App {
 
     val pollyClient = AmazonPollyClientBuilder.standard.build
     val request = new SynthesizeSpeechRequest
-    request.setVoiceId(VoiceId.Joanna)
+    request.setVoiceId(options.voiceId)
     request.setOutputFormat(OutputFormat.Mp3)
     request.setText(message)
     val synthesizeSpeechResult: SynthesizeSpeechResult = pollyClient.synthesizeSpeech(request)
@@ -46,8 +45,8 @@ object Cracker extends App {
       val mediaPlayer: MediaPlayer = new MediaPlayer(media)
       mediaPlayer.play()
       mediaPlayer.setOnEndOfMedia { () =>
-        mp3File.delete()
-        System.exit(0)
+          mp3File.delete()
+          System.exit(0)
       }
     })
   }
