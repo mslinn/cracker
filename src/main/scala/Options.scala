@@ -1,6 +1,7 @@
 import com.amazonaws.services.polly.model.VoiceId
 import com.micronautics.options._
 import java.io.File
+import org.apache.commons.io.FileUtils
 
 class Options(val args: Array[String]) extends AbstractOptions(args, Options.helpMsg) {
   lazy val (temporaryOut, mp3File)= value("-o").map { outputFileName =>
@@ -15,7 +16,7 @@ class Options(val args: Array[String]) extends AbstractOptions(args, Options.hel
 
   // This option test must be last because it can reference args(0)
   lazy val message: String = value("-i").map { fileName =>
-    io.Source.fromFile(fileName).mkString.replaceAll("\\s+", " ")
+    FileUtils.readFileToString(new File(fileName), null.asInstanceOf[String]).replaceAll("\\s+", " ")
   }.getOrElse(if (options.nonEmpty) args(0) else "Polly wants a cracker!")
 }
 

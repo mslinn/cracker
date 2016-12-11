@@ -38,6 +38,7 @@ javacOptions ++= Seq(
 
 libraryDependencies ++= Seq(
   "com.amazonaws"      %  "aws-java-sdk-osgi" % "1.11.65" withSources(),
+  "commons-io"         %  "commons-io"        % "2.5"     withSources(),
   "org.scalatest"      %% "scalatest"         % "3.0.1"   % "test" withSources(),
   "junit"              %  "junit"             % "4.12"    % "test"
 )

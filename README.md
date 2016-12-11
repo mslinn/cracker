@@ -1,5 +1,7 @@
 # Cracker &ndash; AWS Polly Demo
 
+Voices a string or text file using AWS Polly. A maximum of 3000 characters is allowed in the message to voice.
+
 Built with Scala 2.12 and Java 8+.
 
 ## To Run

@@ -1,12 +1,27 @@
 import java.io.File
 import java.io.InputStream
+import java.util.regex.Pattern
 
 object Cracker extends App {
   val options = new Options(args)
+
+  val billedLen = billedLength(options.message)
+  if (billedLen>1500 || options.message.length>3000) {
+    System.err.println(
+      s"""Error: AWS Polly only supports messages up to 3000 characters long, of which no more than 1500 can be billed characters.
+         |SSML tags are not counted as billed characters.
+         |Your message has $billedLen billed characters and a total of ${ options.message.length } characters.
+         |""".stripMargin.replaceAll("\\s+", " "))
+    System.exit(2)
+  }
   val stream = speechStream(options.message)
   saveMp3File(stream, options.mp3File.getAbsolutePath)
   if (options.temporaryOut) playFile(options.mp3File)
 
+  def billedLength(string: String): Int = {
+    val billedString = string.replaceAll("<(\\S+)>.*?</\\1>", "")
+    billedString.length
+  }
 
   /** Obtain MP3 stream from AWS Polly that voices the message */
   def speechStream(message: String): InputStream = {
