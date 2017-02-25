@@ -11,6 +11,8 @@
     <setting name="testName" value="" />
     <setting name="testKind" value="Class" />
     <setting name="showProgressMessages" value="true" />
+    <classRegexps />
+    <testRegexps />
     <envs />
     <method />
   </configuration>
