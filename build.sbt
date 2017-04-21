@@ -2,9 +2,9 @@ organization := "com.micronautics"
 
 name := "cracker"
 
-version := "0.1.2"
+version := "0.1.3"
 
-scalaVersion := "2.12.1"
+scalaVersion := "2.12.2"
 
 scalacOptions ++= Seq(
   "-deprecation",
@@ -37,10 +37,10 @@ javacOptions ++= Seq(
 )
 
 libraryDependencies ++= Seq(
-  "com.amazonaws"      %  "aws-java-sdk-osgi" % "1.11.96" withSources(),
-  "commons-io"         %  "commons-io"        % "2.5"     withSources(),
-  "org.scalatest"      %% "scalatest"         % "3.0.1"   % "test" withSources(),
-  "junit"              %  "junit"             % "4.12"    % "test"
+  "com.amazonaws"      %  "aws-java-sdk-osgi" % "1.11.119" withSources(),
+  "commons-io"         %  "commons-io"        % "2.5"      withSources(),
+  "org.scalatest"      %% "scalatest"         % "3.0.1"    % "test" withSources(),
+  "junit"              %  "junit"             % "4.12"     % "test"
 )
 
 assemblyMergeStrategy in assembly := {

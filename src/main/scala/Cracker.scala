@@ -1,6 +1,5 @@
 import java.io.File
 import java.io.InputStream
-import java.util.regex.Pattern
 
 object Cracker extends App {
   val options = new Options(args)
