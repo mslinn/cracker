@@ -4,7 +4,7 @@ name := "cracker"
 
 version := "0.1.3"
 
-scalaVersion := "2.12.3"
+scalaVersion := "2.12.4"
 
 scalacOptions ++= Seq(
   "-deprecation",
